@@ -12,8 +12,7 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
   return res.status === 204 ? (undefined as T) : res.json();
 }
 
-export const getClaims = (status?: ClaimStatus) =>
-  request<Claim[]>(status ? `/api/claims?status=${status}` : "/api/claims");
+export const getClaims = () => request<Claim[]>("/api/claims");
 
 export const createClaim = (claim: NewClaim) =>
   request<Claim>("/api/claims", { method: "POST", body: JSON.stringify(claim) });

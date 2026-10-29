@@ -6,7 +6,15 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-const money = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD" });
+const formatAmount = (value: string | number) => {
+  const text = String(value).trim();
+  if (!text) return "—";
+
+  const numericValue = Number(text);
+  return Number.isFinite(numericValue)
+    ? numericValue.toLocaleString("en-US", { style: "currency", currency: "USD" })
+    : text;
+};
 
 export default function ClaimList({ claims, onStatusChange, onDelete }: Props) {
   if (claims.length === 0) return <p className="empty">No claims yet.</p>;
@@ -30,17 +38,14 @@ export default function ClaimList({ claims, onStatusChange, onDelete }: Props) {
             <td>{c.policyNumber}</td>
             <td>{c.claimantName}</td>
             <td>{c.type}</td>
-            <td>{money(c.amount)}</td>
+            <td>{formatAmount(c.amount)}</td>
             <td>{c.description}</td>
             <td>
               <span className={`badge ${c.status.toLowerCase()}`}>{c.status}</span>
             </td>
             <td className="actions">
               {c.status === "Submitted" && (
-                <>
-                  <button onClick={() => onStatusChange(c.id, "Approved")}>Approve</button>
-                  <button onClick={() => onStatusChange(c.id, "Rejected")}>Reject</button>
-                </>
+                <button onClick={() => onStatusChange(c.id, "Approved")}>Approve</button>
               )}
               <button className="danger" onClick={() => onDelete(c.id)}>Delete</button>
             </td>

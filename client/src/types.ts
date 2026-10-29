@@ -6,7 +6,7 @@ export interface Claim {
   policyNumber: string;
   claimantName: string;
   type: ClaimType;
-  amount: number;
+  amount: string;
   description: string;
   status: ClaimStatus;
   createdAt: string;

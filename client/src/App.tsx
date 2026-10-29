@@ -13,7 +13,8 @@ export default function App() {
 
   async function load() {
     try {
-      setClaims(await api.getClaims(filter === "All" ? undefined : filter));
+      const allClaims = await api.getClaims();
+      setClaims(filter === "All" ? allClaims : allClaims.filter((claim) => claim.status === filter));
       setError("");
     } catch (e) {
       setError((e as Error).message);

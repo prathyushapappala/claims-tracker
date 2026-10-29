@@ -16,7 +16,7 @@ cd client && npm install && npm run dev
 
 | Method | Path                     | Body                                                          |
 | ------ | ------------------------ | ------------------------------------------------------------- |
-| GET    | /api/claims?status=      | optional filter: Submitted, Approved or Rejected              |
+| GET    | /api/claims              |                                                               |
 | GET    | /api/claims/:id          |                                                               |
 | POST   | /api/claims              | policyNumber, claimantName, type, amount, description         |
 | PATCH  | /api/claims/:id/status   | { status: "Approved" \| "Rejected" \| "Submitted" }            |

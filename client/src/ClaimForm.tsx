@@ -10,7 +10,7 @@ export default function ClaimForm({ onSubmit }: { onSubmit: (claim: NewClaim) =>
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    await onSubmit({ ...form, amount: Number(form.amount) });
+    await onSubmit({ ...form, amount: form.amount.trim() });
     setForm(EMPTY);
   }
 
@@ -25,7 +25,7 @@ export default function ClaimForm({ onSubmit }: { onSubmit: (claim: NewClaim) =>
         <option>Health</option>
         <option>Life</option>
       </select>
-      <input type="number" min="1" step="0.01" placeholder="Amount ($)" value={form.amount} onChange={(e) => update("amount", e.target.value)} required />
+      <input placeholder="Amount" value={form.amount} onChange={(e) => update("amount", e.target.value)} required />
       <textarea placeholder="What happened?" value={form.description} onChange={(e) => update("description", e.target.value)} required />
       <button type="submit">Submit claim</button>
     </form>

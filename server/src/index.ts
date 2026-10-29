@@ -11,11 +11,10 @@ app.use(express.json());
 const TYPES: ClaimType[] = ["Auto", "Home", "Health", "Life"];
 const STATUSES: ClaimStatus[] = ["Submitted", "Approved", "Rejected"];
 
-// List claims, optionally filtered by ?status=
+// List all claims
 app.get("/api/claims", async (req, res) => {
   const claims = await readClaims();
-  const { status } = req.query;
-  res.json(status ? claims.filter((c) => c.status === status) : claims);
+  res.json(claims);
 });
 
 app.get("/api/claims/:id", async (req, res) => {
@@ -34,8 +33,10 @@ app.post("/api/claims", async (req, res) => {
   if (!TYPES.includes(type)) {
     return res.status(400).json({ error: `type must be one of ${TYPES.join(", ")}` });
   }
-  if (typeof amount !== "number" || amount <= 0) {
-    return res.status(400).json({ error: "amount must be a positive number" });
+
+  const normalizedAmount = typeof amount === "number" ? String(amount) : typeof amount === "string" ? amount.trim() : "";
+  if (!normalizedAmount) {
+    return res.status(400).json({ error: "amount is required" });
   }
 
   const claim: Claim = {
@@ -43,7 +44,7 @@ app.post("/api/claims", async (req, res) => {
     policyNumber,
     claimantName,
     type,
-    amount,
+    amount: normalizedAmount,
     description,
     status: "Submitted",
     createdAt: new Date().toISOString(),
