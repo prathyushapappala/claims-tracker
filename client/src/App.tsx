@@ -42,6 +42,15 @@ export default function App() {
 
       <ClaimForm onSubmit={(claim: NewClaim) => run(() => api.createClaim(claim))} />
 
+      <div className="search">
+        <label htmlFor="claim-search">Search claims</label>
+        <input
+          id="claim-search"
+          type="search"
+          placeholder="Search by claimant or policy number"
+        />
+      </div>
+
       <div className="filters">
         {FILTERS.map((f) => (
           <button key={f} className={f === filter ? "active" : ""} onClick={() => setFilter(f)}>
